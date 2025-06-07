@@ -1,0 +1,1 @@
+"The Christian fleet defeats the Ottoman navy in a decisive battle through the intercession of Our Lady."

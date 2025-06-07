@@ -1,0 +1,138 @@
+/* styles/style.css */
+
+/* ========== COLOR PALETTE ========== */
+:root {
+  --color-bg: #0e0e10;
+  --color-bg-alt: #1a1a1d;
+  --color-panel: #2a2a2e;
+  --color-text: #e2e2e2;
+  --color-text-subtle: #aaa;
+  --color-accent: #ffd369;
+  --color-border: #333;
+  --color-shadow: rgba(0, 0, 0, 0.35);
+  --color-overlay: rgba(0, 0, 0, 0.95);
+  --color-card-bg: rgba(255, 255, 255, 0.05);
+  --color-card-border: rgba(255, 255, 255, 0.2);
+}
+
+/* ========== BASE STYLES ========== */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+header {
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(to right, #1f1f22, #2d2d33);
+  color: #f5f5f5;
+  box-shadow: 0 4px 10px var(--color-shadow);
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+}
+
+h1 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ========== TIMELINE SECTION ========== */
+#timeline-section {
+  position: relative;
+  background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  height: 400px;
+  overflow: hidden;
+}
+
+canvas#timeline-canvas {
+  display: block;
+}
+
+#timeline-entries .timeline-entry {
+  position: absolute;
+  top: 120px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.3s ease;
+  color: var(--color-text);
+  font-weight: bold;
+  font-size: 0.85rem;
+  background: var(--color-card-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-card-border);
+}
+
+.timeline-entry.visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.05);
+}
+
+#year-labels {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+}
+
+.year-label {
+  position: absolute;
+  top: 5px;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ========== POPUP PANEL ========== */
+#entry-popup {
+  font-size: 1rem;
+  line-height: 1.4;
+  background: var(--color-overlay);
+  color: white;
+}
+
+/* ========== DOCUMENTS / PLACEHOLDER CARDS ========== */
+.placeholder-card {
+  background: var(--color-panel);
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  max-width: 800px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px var(--color-shadow);
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+/* ========== FILTER BAR ========== */
+#filter-bar {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background: #111;
+  border: 1px solid var(--color-border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  z-index: 100;
+  font-size: 0.9rem;
+  color: white;
+  box-shadow: 0 2px 8px var(--color-shadow);
+}
+
+#filter-bar label {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+#filter-bar input[type="checkbox"] {
+  margin-right: 0.3rem;
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Battle of Lepanto",
+  "startYear": 1571,
+  "endYear": 1581,
+  "visible": "decade",
+  "tags": ["Marian", "War", "Rosary", "Naval"],
+  "icon": "icon.svg",
+  "image": "art.webp",
+  "quote": "The Rosary is the weapon for these times. — St. Padre Pio",
+  "description": "The Christian fleet defeats the Ottoman navy in a decisive battle through the intercession of Our Lady.",
+  "link": "entries/events/battle-of-lepanto/"
+}
