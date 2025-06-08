@@ -1,33 +1,20 @@
 // scripts/positionEntries.js
 
-window.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('timeline-section');
-  const entryContainer = document.getElementById('timeline-entries');
+window.updateEntryPositions = function () {
+  const container = document.getElementById('timeline-entries');
+  const entries = document.querySelectorAll('.timeline-entry');
+  const { zoom, offsetX } = window.timelineZoom.getZoomState();
+  const adjust = window.datingUtils.adjustYearForPosition;
 
-  let zoom = 2.0;
-  let offsetX = 0;
-  const baseYear = -3000;
+  entries.forEach(entry => {
+    const start = parseInt(entry.dataset.start);
+    const end = parseInt(entry.dataset.end);
+    if (!start || !end) return;
 
-  function yearToX(year) {
-    return (year + 3000) * zoom + offsetX;
-  }
+    const startX = adjust(start) * zoom + offsetX;
+    const endX = adjust(end) * zoom + offsetX;
+    const midX = (startX + endX) / 2;
 
-  function updateEntryPositions() {
-    document.querySelectorAll('.timeline-entry').forEach(entry => {
-      const start = parseInt(entry.dataset.startyear);
-      const end = parseInt(entry.dataset.endyear);
-      const mid = (start + end) / 2;
-      const x = yearToX(mid);
-      entry.style.left = `${x}px`;
-    });
-  }
-
-  function updateZoomAndOffset(newZoom, newOffsetX) {
-    zoom = newZoom;
-    offsetX = newOffsetX;
-    updateEntryPositions();
-  }
-
-  window.updateEntryPositions = updateEntryPositions;
-  window.updateZoomAndOffset = updateZoomAndOffset;
-});
+    entry.style.left = `${midX}px`;
+  });
+};
