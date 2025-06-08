@@ -1,20 +1,19 @@
 // scripts/positionEntries.js
 
-window.updateEntryPositions = function () {
-  const container = document.getElementById('timeline-entries');
-  const entries = document.querySelectorAll('.timeline-entry');
-  const { zoom, offsetX } = window.timelineZoom.getZoomState();
-  const adjust = window.datingUtils.adjustYearForPosition;
+window.addEventListener('DOMContentLoaded', () => {
+  const entriesContainer = document.getElementById('timeline-entries');
 
-  entries.forEach(entry => {
-    const start = parseInt(entry.dataset.start);
-    const end = parseInt(entry.dataset.end);
-    if (!start || !end) return;
+  window.updateEntryPositions = function () {
+    const { zoom, offsetX } = window.timelineZoom.getZoomState();
+    const offset = window.datingUtils.TIMELINE_OFFSET;
 
-    const startX = adjust(start) * zoom + offsetX;
-    const endX = adjust(end) * zoom + offsetX;
-    const midX = (startX + endX) / 2;
+    document.querySelectorAll('.timeline-entry').forEach(entry => {
+      const startYear = parseInt(entry.dataset.startYear);
+      const visualYear = window.datingUtils.toVisualYear(startYear);
+      if (visualYear === null) return;
 
-    entry.style.left = `${midX}px`;
-  });
-};
+      const x = (visualYear + offset) * zoom + offsetX;
+      entry.style.left = `${x}px`;
+    });
+  };
+});

@@ -1,77 +1,68 @@
 // scripts/zoomHandler.js
 
-(function () {
-  const OFFSET = 5000;
-  const MIN_ZOOM = 0.2;
-  const MAX_ZOOM = 20;
-  const ZOOM_SPEED = 0.0015;
+window.addEventListener('DOMContentLoaded', () => {
+  const section = document.getElementById('timeline-section');
+  const track = document.getElementById('timeline-track');
 
-  let zoom = 2.0;
+  let zoom = 1.5;
   let offsetX = 0;
+  const zoomMin = 0.5;
+  const zoomMax = 20;
+  const zoomSpeed = 0.0015;
 
-  function setZoomOffset(newZoom, newOffsetX) {
-    zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom));
-    offsetX = newOffsetX;
+  function applyZoom() {
     if (typeof window.drawTicks === 'function') window.drawTicks();
     if (typeof window.updateEntryPositions === 'function') window.updateEntryPositions();
-    updateZoomUI();
+    document.body.setAttribute('data-zoom', zoom.toFixed(2));
   }
 
-  function getZoomState() {
-    return { zoom, offsetX };
+  function zoomAt(clientX, deltaY) {
+    const rect = section.getBoundingClientRect();
+    const mouseX = clientX - rect.left;
+    const prevZoom = zoom;
+    zoom = Math.max(zoomMin, Math.min(zoomMax, zoom * (1 + deltaY * zoomSpeed)));
+    const visualYear = (mouseX - offsetX) / prevZoom;
+    offsetX = mouseX - visualYear * zoom;
+    applyZoom();
   }
 
-  function updateZoomUI() {
-    let level = 'century';
-    if (zoom > 4) level = 'decade';
-    if (zoom > 10) level = 'year';
-    document.body.setAttribute('data-zoom', level);
-
-    document.querySelectorAll('.timeline-entry').forEach(el => {
-      const threshold = el.dataset.visible;
-      if (
-        threshold === level ||
-        (threshold === 'century' && level !== 'year') ||
-        (threshold === 'decade' && level === 'decade') ||
-        (threshold === 'year' && level === 'year')
-      ) {
-        el.classList.add('visible');
-      } else {
-        el.classList.remove('visible');
-      }
-    });
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('timeline-section');
-
-    const centerX = container.clientWidth / 2;
-    const visualYearZero = window.datingUtils.adjustYearForPosition(1, OFFSET); // adjusted year 1 AD
-    offsetX = centerX - visualYearZero * zoom;
-    setZoomOffset(zoom, offsetX);
-
-    container.addEventListener('wheel', e => {
-      if (e.ctrlKey || e.metaKey) return;
-      e.preventDefault();
-
-      const delta = -e.deltaY;
-      const prevZoom = zoom;
-      zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom * (1 + delta * ZOOM_SPEED)));
-
-      const rect = container.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const yearUnderCursor = (mouseX - offsetX) / prevZoom - OFFSET;
-      offsetX = mouseX - (yearUnderCursor + OFFSET) * zoom;
-
-      setZoomOffset(zoom, offsetX);
-    });
+  section.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || e.metaKey) return;
+    e.preventDefault();
+    zoomAt(e.clientX, -e.deltaY);
   });
 
+  // Touch gestures for pinch zoom
+  let lastDist = null;
+  section.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (lastDist !== null) {
+        const delta = dist - lastDist;
+        zoomAt((e.touches[0].clientX + e.touches[1].clientX) / 2, -delta);
+      }
+      lastDist = dist;
+    }
+  });
+  section.addEventListener('touchend', () => (lastDist = null));
+
   window.timelineZoom = {
-    get zoom() { return zoom; },
-    get offsetX() { return offsetX; },
-    setZoomOffset,
-    getZoomState,
-    updateZoomUI
+    get zoom() {
+      return zoom;
+    },
+    get offsetX() {
+      return offsetX;
+    },
+    setZoomOffset(z, x) {
+      zoom = z;
+      offsetX = x;
+      applyZoom();
+    },
   };
-})();
+
+  // Initial setup
+  offsetX = section.clientWidth / 2 - window.datingUtils.adjustYearForPosition(1) * zoom;
+  applyZoom();
+});

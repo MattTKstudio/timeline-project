@@ -10,16 +10,11 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header Partial -->
   <div data-include="components/header.html"></div>
 
-  <!-- Timeline Section -->
-  <section id="timeline-section" class="timeline-container">
-    <div id="banner"></div>
-    <canvas id="timeline-canvas"></canvas>
-    <div id="year-labels"></div>
-    <div id="timeline-entries"></div>
-  </section>
+  <!-- Timeline Partial -->
+  <div data-include="components/timeline.html"></div>
 
   <!-- Entry Popup Modal -->
   <div id="entry-popup">
@@ -49,12 +44,13 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- Footer Partial -->
   <div data-include="components/footer.html"></div>
 
   <!-- Scripts -->
   <script src="scripts/injectPartials.js" defer></script>
   <script src="scripts/dating.js" defer></script>
+  <script src="scripts/timelineZoom.js" defer></script>
   <script src="scripts/timeline-ticks.js" defer></script>
   <script src="scripts/positionEntries.js" defer></script>
   <script src="scripts/zoomHandler.js" defer></script>
