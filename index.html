@@ -3,88 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Timeline Viewer</title>
+  <title>🕊️ Sacred Timeline Viewer</title>
   <link rel="stylesheet" href="styles/style.css" />
-  <style>
-    #banner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background: url('public/images/thecruciformbanner.webp') repeat-x;
-      background-size: contain;
-      opacity: 0.1;
-      z-index: -1;
-      pointer-events: none;
-    }
-    #entry-popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.95);
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 20px;
-      max-width: 90vw;
-      max-height: 90vh;
-      overflow-y: auto;
-      color: white;
-      display: none;
-      z-index: 10;
-    }
-    #entry-popup h2 {
-      margin-top: 0;
-    }
-    #entry-popup img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-    #entry-popup-close {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #aaa;
-    }
-    #entry-popup-close:hover {
-      color: white;
-    }
-  </style>
+  <link rel="icon" href="public/favicon.ico" type="image/x-icon" />
+  <meta name="description" content="An interactive, artistic journey through sacred history from 3000 BC to today. Explore events, people, and divine moments." />
 </head>
 <body>
-  <header>
-    <h1>📜 Sacred History Timeline</h1>
-  </header>
 
-  <section id="timeline-section" style="position: relative; height: 400px; overflow: hidden;">
+  <!-- Header -->
+  <div data-include="components/header.html"></div>
+
+  <!-- Timeline Section -->
+  <section id="timeline-section" class="timeline-container">
     <div id="banner"></div>
-    <canvas id="timeline-canvas" style="position: absolute; top: 0; left: 0;"></canvas>
-    <div id="year-labels" style="position: absolute; top: 0; left: 0;"></div>
-    <div id="timeline-entries" style="position: absolute; top: 100px; left: 0;"></div>
+    <canvas id="timeline-canvas"></canvas>
+    <div id="year-labels"></div>
+    <div id="timeline-entries"></div>
   </section>
 
-  <section id="placeholder-cards">
-    <div class="placeholder-card">📚 Document A</div>
-    <div class="placeholder-card">🎨 Document B</div>
-    <div class="placeholder-card">🕊️ Document C</div>
-  </section>
-
-  <!-- Popup Entry Panel -->
+  <!-- Entry Popup Modal -->
   <div id="entry-popup">
     <div id="entry-popup-close">✕</div>
     <div id="entry-popup-content"></div>
   </div>
 
-  <!-- Core Timeline Scripts -->
-  <script src="scripts/drawTicks.js" defer></script>
+  <!-- User Lumen Path Preview -->
+  <section id="lumen-path-preview" class="lumen-path-section">
+    <h2 class="section-title">✨ Your Lumen Path ✨</h2>
+    <div class="lumen-cards">
+      <div class="lumen-card">
+        <h3>🧠 Logic</h3>
+        <p>Engage with foundational truths through sacred reasoning.</p>
+        <button class="lumen-btn">Begin</button>
+      </div>
+      <div class="lumen-card">
+        <h3>🎨 Imagination</h3>
+        <p>Explore theological aesthetics and symbolic interpretation.</p>
+        <button class="lumen-btn">Enter</button>
+      </div>
+      <div class="lumen-card">
+        <h3>🌟 Virtue</h3>
+        <p>Walk the path of the saints and build spiritual strength.</p>
+        <button class="lumen-btn">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div data-include="components/footer.html"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/injectPartials.js" defer></script>
+  <script src="scripts/timeline-ticks.js" defer></script>
   <script src="scripts/positionEntries.js" defer></script>
   <script src="scripts/zoomHandler.js" defer></script>
+  <script src="scripts/dragHandler.js" defer></script>
   <script src="scripts/filter.js" defer></script>
   <script src="scripts/lazyload.js" defer></script>
   <script src="scripts/renderTimeline.js" defer></script>
-  <!-- buildEntries.js removed — run in Node only -->
+
 </body>
 </html>

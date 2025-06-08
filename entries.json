@@ -3,7 +3,7 @@
     "title": "Battle of Lepanto",
     "startYear": 1571,
     "endYear": 1581,
-    "visible": "year",
+    "visible": "decade",
     "tags": [
       "Marian",
       "War",
@@ -20,7 +20,7 @@
     "title": "Council of Trent",
     "startYear": 1545,
     "endYear": 1563,
-    "visible": "year",
+    "visible": "century",
     "tags": [
       "Council"
     ],
