@@ -1,8 +1,8 @@
 // scripts/01_dating.js
 
 window.datingUtils = (() => {
-  const START_YEAR = -10000;
-  const END_YEAR = 10000;
+  const START_YEAR = -5000;
+  const END_YEAR = 2025;
   const OFFSET = Math.abs(START_YEAR); // Aligns BC years into positive space
 
   // Convert year to human-readable label

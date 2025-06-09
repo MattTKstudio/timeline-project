@@ -6,7 +6,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const section = document.getElementById('timeline-section');
   const labelContainer = document.getElementById('year-labels');
   const banner = document.getElementById('banner');
-  const stamp = document.getElementById('stamp-ad');
 
   const {
     START_YEAR,
@@ -86,8 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
         (zoom >= 0.1 && isMillennium(year)) ||
         (zoom >= 0.5 && isCentury(year)) ||
         (zoom >= 10 && isDecade(year)) ||
-        (zoom >= 50 && isYear(year))
-        
+        (zoom >= 60 && isYear(year))
       ) {
         const label = document.createElement('div');
         label.className = 'year-label';
@@ -96,7 +94,6 @@ window.addEventListener('DOMContentLoaded', () => {
         label.style.transition = 'opacity 0.3s ease';
         label.innerText = toLabel(year);
         labelContainer.appendChild(label);
-        
 
         requestAnimationFrame(() => {
           label.style.opacity = '1';
@@ -108,11 +105,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const ad1X = (toVisualYear(1) + OFFSET) * zoom + offsetX;
     banner.style.transform = `translateX(${ad1X}px) translateX(-50%) scale(${zoom})`;
     banner.style.transformOrigin = 'center center';
-
-    // Stamp at visual year 0 (between 1 BC and AD 1)
-    const stampX = OFFSET * zoom + offsetX;
-    stamp.style.left = `${stampX}px`;
-    stamp.style.transform = `translateX(-50%)`;
   }
 
   resizeCanvas();

@@ -2,7 +2,7 @@
 
 window.timelineZoom = (() => {
   let zoom = 1;               // Current zoom level
-  let offsetX = -8500;        // Current horizontal offset
+  let offsetX = -4000;        // Current horizontal offset
   const minZoom = 0.1;
   const maxZoom = 80;
 

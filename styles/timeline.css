@@ -29,7 +29,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 2;
   height: 100%;
   width: 100%;
 }
@@ -57,25 +57,27 @@
 /* Banner */
 #banner-container {
   position: absolute;
-  top: 0;
+  top: 100px; /* Move it BELOW the ticks */
   left: 0;
-  height: 500px;
   width: 100%;
-  z-index: 0;
-  overflow: hidden;
+  height: 150px;
+  z-index: 0; /* Higher than canvas (1), lower than labels (4) */
   pointer-events: none;
+  overflow: visible;
 }
 #banner {
   position: absolute;
   top: 0;
   left: 0;
-  height: 200px;
+  height: 500px;
   transform-origin: center center;
   transform: translateX(0) scale(1);
-  transition: transform 0.15s ease-out;
+  transition: transform 0.2s ease;
   image-rendering: auto;
   pointer-events: none;
 }
+
+
 
 
 /* Entries */
@@ -132,19 +134,6 @@
   right: 0;
   background: linear-gradient(to left, var(--cream), transparent);
 }
-
-/* Stamp AD 1 */
-#stamp-ad {
-  position: absolute;
-  top: 20px;
-  width: 80px; /* or whatever size you want */
-  height: auto;
-  z-index: 4;
-  pointer-events: none;
-  transform-origin: center center;
-  will-change: transform;
-}
-
 
 .tick-millennium {
   background-color: var(--millennium-color);

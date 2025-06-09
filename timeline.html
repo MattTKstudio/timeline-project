@@ -18,7 +18,16 @@
   <!-- 📜 Cruciform Timeline Section -->
   <section id="timeline-section" aria-label="Sacred Timeline Viewer">
 
-    <!-- ⛰️ Banner: Art that guides the soul through time -->
+    <!-- 📏 Timeline Canvas -->
+    <canvas id="timeline-canvas" aria-hidden="true"></canvas>
+
+    <!-- ⏳ Year Labels -->
+    <div id="year-labels" aria-hidden="true"></div>
+
+    <!-- 🌱 Timeline Entries -->
+    <div id="entries-container" role="region" aria-label="Timeline Events"></div>
+
+    <!-- ⛰️ Banner: Art that guides the soul through time (now positioned below the timeline) -->
     <div id="banner-container">
       <img
         id="banner"
@@ -29,28 +38,10 @@
       />
     </div>
 
-    <!-- 🕊️ Stamp: Year AD 1 -->
-    <img
-      id="stamp-ad"
-      src="assets/icons/StampAD.webp"
-      alt="AD 1 Marker"
-      width="80"
-      height="80"
-      loading="lazy"
-    />
-
-    <!-- 📏 Timeline Canvas -->
-    <canvas id="timeline-canvas" aria-hidden="true"></canvas>
-
-    <!-- ⏳ Year Markers -->
-    <div id="year-labels" aria-hidden="true"></div>
-
-    <!-- 🌱 Timeline Entries -->
-    <div id="entries-container" role="region" aria-label="Timeline Events"></div>
-
     <!-- 🌒 Edge Fades -->
     <div id="fade-left" class="timeline-fade"></div>
     <div id="fade-right" class="timeline-fade"></div>
+
   </section>
 
   <!-- 🪵 Sacred Footer -->
