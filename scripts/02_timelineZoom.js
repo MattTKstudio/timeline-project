@@ -15,11 +15,8 @@ window.timelineZoom = (() => {
   function setZoom(newZoom, centerX = window.innerWidth / 2) {
     const clampedZoom = Math.max(minZoom, Math.min(maxZoom, newZoom));
     const zoomFactor = clampedZoom / zoom;
-
-    // Adjust offset so zoom centers on pointer
     offsetX = (offsetX - centerX) * zoomFactor + centerX;
     zoom = clampedZoom;
-
     notify();
   }
 
@@ -58,18 +55,31 @@ window.timelineZoom = (() => {
 
     // Mouse wheel zoom
     canvas.addEventListener('wheel', e => {
-      e.preventDefault(); // Block native scroll
+      e.preventDefault();
       const zoomDelta = -e.deltaY * 0.001;
       setZoom(zoom * (1 + zoomDelta), e.clientX);
     }, { passive: false });
 
-    // Pinch-to-zoom on touch
+    // Touch drag and pinch
     let lastTouchDistance = null;
+    let lastTouchX = null;
+
+    canvas.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) {
+        lastTouchX = e.touches[0].clientX;
+      }
+    });
 
     canvas.addEventListener('touchmove', e => {
-      if (e.touches.length === 2) {
+      if (e.touches.length === 1) {
+        // Single finger drag to pan
+        const touchX = e.touches[0].clientX;
+        const dx = touchX - lastTouchX;
+        lastTouchX = touchX;
+        setOffsetX(offsetX + dx);
+      } else if (e.touches.length === 2) {
+        // Pinch to zoom
         e.preventDefault();
-
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -86,6 +96,7 @@ window.timelineZoom = (() => {
 
     canvas.addEventListener('touchend', () => {
       lastTouchDistance = null;
+      lastTouchX = null;
     });
   }
 
