@@ -1,0 +1,103 @@
+/* base.css – layout + reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--cream, #f3f0e6);
+}
+
+body {
+  font-family: var(--font-serif, 'Baskerville', serif);
+  color: var(--ink, #1e1e1e);
+  line-height: 1.6;
+  min-height: 100vh;
+  background-color: var(--cream);
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--jade-dark, #004d38);
+}
+
+ul,
+ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+button {
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--jade-dark, #004d38);
+  border-radius: 4px;
+  background-color: var(--paper, #fdfdf9);
+  color: var(--ink);
+}
+
+section {
+  padding: 2rem 1rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif, 'Baskerville', serif);
+  font-weight: normal;
+  margin-bottom: 1rem;
+  color: var(--jade-dark, #004d38);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.1rem; }
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Scrollbar aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--jade-dark, #004d38);
+}
+::-webkit-scrollbar-track {
+  background: var(--paper, #fdfdf9);
+}

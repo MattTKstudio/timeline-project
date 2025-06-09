@@ -1,89 +1,52 @@
 :root {
-  --color-bg: #0b0b0f;
-  --color-line: #444;
-  --color-accent: #d8c593;
-  --font-sans: 'Georgia', serif;
-  --font-display: 'Cinzel', serif;
+  --jade: #006a4e;
+  --jade-dark: #004d38;
+  --jade-light: #1e9e78;
+  --cream: #f3f0e6;
+  --paper: #fdfdf9;
+  --ink: #1d1f24;
+  --accent-gold: #c1a059;
+  --font-serif: 'Baskerville', serif;
+  --font-sans: 'Segoe UI', sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: #eee;
+  background-color: var(--cream);
+  font-family: var(--font-serif);
+  color: var(--ink);
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
-/* Timeline Container */
-#timeline-section {
-  position: relative;
-  width: 100vw;
-  height: 400px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
+#main-footer {
+  background: #111;
+  color: #aaa;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid #222;
 }
 
-#timeline-track {
-  position: relative;
-  height: 100%;
-  min-width: 10000px;
+.footer-container {
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
 }
 
-#timeline-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
+.footer-links a {
+  margin: 0 0.75rem;
+  color: #888;
+  text-decoration: none;
 }
 
-#timeline-entries {
-  position: absolute;
-  top: 80px;
-  left: 0;
-  height: 100%;
-  z-index: 2;
+.footer-links a:hover {
+  color: white;
 }
 
-#timeline-banner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-  opacity: 0.1;
-}
-
-/* Entry cards */
-.timeline-entry {
-  position: absolute;
-  transform: translateX(-50%);
-  transition: opacity 0.3s;
-  cursor: pointer;
-}
-
-.timeline-entry img {
-  height: 60px;
-  opacity: 0.4;
-  transition: opacity 0.3s;
-}
-
-.timeline-entry.visible img {
-  opacity: 1;
-}
-
-/* Labels */
-.year-label {
-  position: absolute;
-  top: 4px;
-  font-size: 0.75rem;
-  color: var(--color-accent);
-  transform: translateX(-50%);
+.hidden {
+  display: none;
 }

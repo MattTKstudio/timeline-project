@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📜 The Cruciform Timeline · Sacred History Reimagined</title>
+  <meta name="description" content="Explore the Cruciform Timeline — an interactive journey through sacred history, marked by contemplation, clarity, and cosmic rhythm." />
+  <link rel="icon" href="public/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/timeline.css" />
+</head>
+
+<body data-zoom="century">
+
+  <!-- ✨ Sacred Header -->
+  <div data-include="components/header.html"></div>
+
+  <!-- 📜 Cruciform Timeline Section -->
+  <section id="timeline-section" aria-label="Sacred Timeline Viewer">
+
+    <!-- ⛰️ Banner: Art that guides the soul through time -->
+    <div id="banner-container">
+      <img
+        id="banner"
+        src="assets/banners/thecruciformbanner.webp"
+        alt="Cruciform Timeline Banner"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <!-- 🕊️ Stamp: Year AD 1 -->
+    <img
+      id="stamp-ad"
+      src="assets/icons/StampAD.webp"
+      alt="AD 1 Marker"
+      width="80"
+      height="80"
+      loading="lazy"
+    />
+
+    <!-- 📏 Timeline Canvas -->
+    <canvas id="timeline-canvas" aria-hidden="true"></canvas>
+
+    <!-- ⏳ Year Markers -->
+    <div id="year-labels" aria-hidden="true"></div>
+
+    <!-- 🌱 Timeline Entries -->
+    <div id="entries-container" role="region" aria-label="Timeline Events"></div>
+
+    <!-- 🌒 Edge Fades -->
+    <div id="fade-left" class="timeline-fade"></div>
+    <div id="fade-right" class="timeline-fade"></div>
+  </section>
+
+  <!-- 🪵 Sacred Footer -->
+  <div data-include="components/footer.html"></div>
+
+  <!-- 📜 Scripts -->
+  <script src="scripts/includeHTML.js" defer></script>
+  <script src="scripts/01_dating.js" defer></script>
+  <script src="scripts/02_timelineZoom.js" defer></script>
+  <script src="scripts/03_timelineTicks.js" defer></script>
+  <script src="scripts/04_loadData.js" defer></script>
+  <script src="scripts/05_renderEntries.js" defer></script>
+</body>
+</html>

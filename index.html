@@ -3,61 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🕊️ Sacred Timeline Viewer</title>
+  <title>🕊️ Wings of Contemplation</title>
+  <meta name="description" content="A journey through sacred philosophy, the liberal arts, and contemplative beauty.">
   <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/woc.css" />
   <link rel="icon" href="public/favicon.ico" type="image/x-icon" />
-  <meta name="description" content="An interactive, artistic journey through sacred history from 5000 BC to today. Explore events, people, and divine moments." />
+  <script src="scripts/injectPartials.js" defer></script>
 </head>
 <body>
 
-  <!-- Header Partial -->
+  <!-- Header (auto-loaded) -->
   <div data-include="components/header.html"></div>
 
-  <!-- Timeline Partial -->
-  <div data-include="components/timeline.html"></div>
-
-  <!-- Entry Popup Modal -->
-  <div id="entry-popup">
-    <div id="entry-popup-close">✕</div>
-    <div id="entry-popup-content"></div>
-  </div>
-
-  <!-- User Lumen Path Preview -->
-  <section id="lumen-path-preview" class="lumen-path-section">
-    <h2 class="section-title">✨ Your Lumen Path ✨</h2>
-    <div class="lumen-cards">
-      <div class="lumen-card">
-        <h3>🧠 Logic</h3>
-        <p>Engage with foundational truths through sacred reasoning.</p>
-        <button class="lumen-btn">Begin</button>
-      </div>
-      <div class="lumen-card">
-        <h3>🎨 Imagination</h3>
-        <p>Explore theological aesthetics and symbolic interpretation.</p>
-        <button class="lumen-btn">Enter</button>
-      </div>
-      <div class="lumen-card">
-        <h3>🌟 Virtue</h3>
-        <p>Walk the path of the saints and build spiritual strength.</p>
-        <button class="lumen-btn">Continue</button>
-      </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>🕊️ Wings of Contemplation</h1>
+      <p class="tagline">A sacred revival of beauty, virtue, and the seven liberal arts</p>
+      <a href="/lumen-path/index.html" class="cta-button">Enter the Path</a>
     </div>
   </section>
 
-  <!-- Footer Partial -->
-  <div data-include="components/footer.html"></div>
+  <!-- Featured Sections -->
+  <section class="woc-grid">
+    <div class="woc-card">
+      <h2>The Lumen Path</h2>
+      <p>A living curriculum based on the Seven Liberal Arts and the contemplative life.</p>
+      <a href="/lumen-path/">Learn More →</a>
+    </div>
+    <div class="woc-card">
+      <h2>Empyrean Calendar</h2>
+      <p>Walk through time with a sacred rhythm drawn from heaven and earth.</p>
+      <a href="/calendar/">Explore →</a>
+    </div>
+    <div class="woc-card">
+      <h2>Cruciform Timeline</h2>
+      <p>History re-imagined as a sacred story — cosmic, personal, and divine.</p>
+      <a href="/timeline.html/">View Timeline →</a>
+    </div>
+    <div class="woc-card">
+      <h2>Substack Letters</h2>
+      <p>Weekly writings on philosophy, the saints, art, and culture from Matt TK.</p>
+      <a href="https://wingsofcontemplation.substack.com" target="_blank">Read Now →</a>
+    </div>
+  </section>
 
-  <!-- Scripts -->
-  <script src="scripts/injectPartials.js" defer></script>
-  <script src="scripts/dating.js" defer></script>
-  <script src="scripts/timelineZoom.js" defer></script>
-  <script src="scripts/timeline-ticks.js" defer></script>
-  <script src="scripts/positionEntries.js" defer></script>
-  <script src="scripts/zoomHandler.js" defer></script>
-  <script src="scripts/dragHandler.js" defer></script>
-  <script src="scripts/filter.js" defer></script>
-  <script src="scripts/lazyload.js" defer></script>
-  <script src="scripts/renderTimeline.js" defer></script>
+  <!-- Footer (auto-loaded) -->
+  <div data-include="components/footer.html"></div>
 
 </body>
 </html>
