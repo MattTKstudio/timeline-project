@@ -31,6 +31,10 @@ window.datingUtils = (() => {
   }
 
   // Tick logic
+    function isMegaannum(year) {
+    return year !== 0 && year % 1000000 === 0;
+  }
+  
   function isMegaannum(year) {
     return year !== 0 && year % 1000000 === 0;
   }

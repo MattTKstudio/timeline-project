@@ -50,31 +50,31 @@ window.addEventListener('DOMContentLoaded', () => {
         ctx.strokeStyle = '#111';
         ctx.lineWidth = 3;
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, 90);
+        ctx.lineTo(x, 80);
         ctx.stroke();
       } else if (zoom >= 0.1 && isMillennium(year)) {
         ctx.strokeStyle = '#222';
         ctx.lineWidth = 2.5;
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, 80);
+        ctx.lineTo(x, 70);
         ctx.stroke();
       } else if (zoom >= 0.5 && isCentury(year)) {
         ctx.strokeStyle = '#333';
         ctx.lineWidth = 2;
         ctx.moveTo(x, 10);
-        ctx.lineTo(x, 70);
+        ctx.lineTo(x, 60);
         ctx.stroke();
       } else if (zoom >= 1.5 && isDecade(year)) {
         ctx.strokeStyle = '#444';
         ctx.lineWidth = 1.5;
         ctx.moveTo(x, 20);
-        ctx.lineTo(x, 60);
+        ctx.lineTo(x, 50);
         ctx.stroke();
       } else if (zoom >= 3 && isYear(year)) {
         ctx.strokeStyle = '#888';
         ctx.lineWidth = 1;
         ctx.moveTo(x, 30);
-        ctx.lineTo(x, 50);
+        ctx.lineTo(x, 40);
         ctx.stroke();
       }
 

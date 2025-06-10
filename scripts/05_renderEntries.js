@@ -1,16 +1,18 @@
 // scripts/buildEntries.js
-// Run with: node scripts/buildEntries.js
+// Run with: node scripts/buildEntries.js [optionalOutputFile.json]
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Paths and setup
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Root: /data/timeline/
 const dataDir = path.join(__dirname, '../data/timeline');
-const outputFile = path.join(__dirname, '../entries/entries.json');
+const outputArg = process.argv[2] || 'entries.json';
+const outputFile = path.join(__dirname, '../entries', outputArg);
+
 const entries = [];
 
 function walkDirectory(dir) {
@@ -27,13 +29,20 @@ function walkDirectory(dir) {
         try {
           const raw = fs.readFileSync(metaPath, 'utf-8');
           const meta = JSON.parse(raw);
-
           const relative = path.relative(dataDir, itemPath).replace(/\\/g, '/');
 
+          const startYear = Number(meta.startYear ?? meta.year ?? 0);
+          const endYear = Number(meta.endYear ?? meta.year ?? 0);
+          const title = meta.title || 'Untitled';
+
+          if (!meta.title) {
+            console.warn(`⚠️ Missing title in: ${metaPath}`);
+          }
+
           const entry = {
-            title: meta.title || 'Untitled',
-            startYear: meta.startYear ?? meta.year ?? 0,
-            endYear: meta.endYear ?? meta.year ?? 0,
+            title,
+            startYear,
+            endYear,
             icon: `data/timeline/${relative}/${meta.icon || 'icon.png'}`,
             image: `data/timeline/${relative}/${meta.image || 'art.webp'}`,
             quote: meta.quote || '',
@@ -44,18 +53,20 @@ function walkDirectory(dir) {
           };
 
           entries.push(entry);
-          console.log(`🗂️  Added: ${entry.title} (${entry.startYear})`);
+          console.log(`🗂️  Added: ${title} (${startYear})`);
         } catch (err) {
           console.error(`❌ Error in ${metaPath}:\n`, err.message);
         }
       } else {
-        walkDirectory(itemPath); // Keep searching deeper
+        walkDirectory(itemPath); // Keep going deeper
       }
     }
   }
 }
 
+// Build and write
 walkDirectory(dataDir);
+entries.sort((a, b) => a.startYear - b.startYear);
 
 fs.writeFileSync(outputFile, JSON.stringify(entries, null, 2));
-console.log(`✅ Built entries.json with ${entries.length} total entries.`);
+console.log(`✅ Built ${outputArg} with ${entries.length} entries.`);
