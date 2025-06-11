@@ -1,0 +1,12 @@
+{
+  "title": "Council of Trent",
+  "startYear": 1545,
+  "endYear": 1563,
+  "visible": "century",                      
+  "tags": ["Council", "Protestant-Reformation"],
+  "slug": "council-of-trent",
+  "icon": "icon.svg",
+  "image": "art.webp",
+  "quote": "Let them who glory, glory in the Lord.",
+  "description": "The Council of Trent was convened in response to the Protestant Reformation."
+}

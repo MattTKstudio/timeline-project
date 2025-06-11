@@ -6,9 +6,29 @@
   --tick-width-millennium: 3px;
   --tick-width-century: 2px;
   --tick-width-decade: 1px;
+
+  --entry-line-height: 4px;
+  --entry-icon-size: 32px;
+
+  --label-color: #444;
+  --label-bg: rgba(255, 255, 255, 0.8);
+  --label-shadow: rgba(0, 0, 0, 0.1);
+
+  --jade: #006a4e;
+  --jade-dark: #004d38;
+  --cream: #f3f0e6;
+  --paper: #fdfdf9;
+  --font-serif: 'Baskerville', serif;
 }
 
-/* Timeline Section Basics */
+/* === Timeline Layout === */
+body {
+  margin: 0;
+  background-color: var(--cream);
+  font-family: var(--font-serif);
+  overflow: hidden; /* prevents scrollbars */
+}
+
 #timeline-section {
   position: relative;
   width: 100vw;
@@ -17,54 +37,65 @@
   border-top: 100px solid var(--jade);
   border-bottom: 4px solid var(--jade-dark);
   overflow: hidden;
-  cursor: grab;
-  touch-action: pan-x;
+  touch-action: none;
+  user-select: none;
 }
-#timeline-section:active {
+
+#timeline-section.dragging {
   cursor: grabbing;
 }
 
-/* Canvas */
+/* === Moving Canvas Container === */
+#timeline-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  will-change: transform;
+  transform: translateX(0); /* updated dynamically by JS */
+  transition: transform 0.1s ease-out;
+}
+
+/* === Canvas Background === */
 #timeline-canvas {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
   height: 100%;
-  width: 100%;
+  width: 100vw;
+  z-index: 1;
+  pointer-events: none;
 }
 
-/* Tick Labels */
+/* === Year Labels === */
 .year-label {
   position: absolute;
   top: 85px;
   left: 0;
-  z-index: 2;
-  white-space: nowrap;
-  pointer-events: none;
-  font-size: 0.85rem;
   transform: translateX(-50%);
-  color: var(--label-century);
-  font-family: var(--font-serif);
-  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  color: var(--label-color);
+  background-color: var(--label-bg);
   padding: 0.1rem 0.3rem;
   border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 1px 2px var(--label-shadow);
+  font-family: var(--font-serif);
+  z-index: 3;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
 }
 
-
-/* Banner */
+/* === Banner === */
 #banner-container {
   position: absolute;
-  top: 100px; /* Move it BELOW the ticks */
+  top: 0;
   left: 0;
   width: 100%;
   height: 150px;
-  z-index: 0; /* Higher than canvas (1), lower than labels (4) */
   pointer-events: none;
-  overflow: visible;
+  z-index: 0;
 }
+
 #banner {
   position: absolute;
   top: 0;
@@ -73,90 +104,100 @@
   transform-origin: center center;
   transform: translateX(0) scale(1);
   transition: transform 0.2s ease;
-  image-rendering: auto;
   pointer-events: none;
 }
 
-
-
-
-/* Entries */
+/* === Entries Container === */
 #entries-container {
   position: absolute;
   bottom: 0;
   left: 0;
-  z-index: 3;
-  display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  height: auto;
-}
-.timeline-entry {
-  background: var(--jade-light);
-  color: white;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  min-width: 120px;
-  font-family: var(--font-sans);
-  position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.timeline-entry:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  height: 100%;
+  width: auto;
+  z-index: 4;
 }
 
-/* Zoom Feedback Overlay */
-#timeline-section::after {
-  content: '';
+/* === Entry Bar === */
+.entry-line {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none;
-  background-image: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.02));
-  z-index: 10;
+  bottom: 40px;
+  height: var(--entry-line-height);
+  background-color: var(--jade-dark);
+  border-radius: 2px;
+  left: 0;
+  z-index: 4;
 }
 
-/* Fade edges */
+/* === Entry Icon === */
+.entry-icon {
+  position: absolute;
+  bottom: 44px;
+  width: var(--entry-icon-size);
+  height: var(--entry-icon-size);
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid var(--jade);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%);
+  z-index: 5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  pointer-events: auto;
+}
+
+.entry-icon:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* === Fade Effects === */
 .timeline-fade {
   position: absolute;
   top: 0;
   width: 100px;
   height: 100%;
-  z-index: 5;
+  z-index: 10;
   pointer-events: none;
 }
+
 #fade-left {
   left: 0;
   background: linear-gradient(to right, var(--cream), transparent);
 }
+
 #fade-right {
   right: 0;
   background: linear-gradient(to left, var(--cream), transparent);
 }
 
+/* === Tick Line Classes (Optional for non-canvas ticks) === */
 .tick-millennium {
   background-color: var(--millennium-color);
   width: var(--tick-width-millennium);
   height: 70px;
   top: 10px;
+  position: absolute;
 }
 .tick-century {
   background-color: var(--century-color);
   width: var(--tick-width-century);
   height: 60px;
   top: 15px;
+  position: absolute;
 }
 .tick-decade {
   background-color: var(--decade-color);
   width: var(--tick-width-decade);
   height: 40px;
   top: 20px;
+  position: absolute;
 }
 
-.tick-visible {
-  opacity: 1;
-}
-.tick-hidden {
-  opacity: 0;
+/* === Ambient Glow === */
+#timeline-section::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background-image: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.02));
+  z-index: 20;
 }

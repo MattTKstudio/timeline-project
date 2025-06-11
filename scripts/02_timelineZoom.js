@@ -1,10 +1,10 @@
 // scripts/02_timelineZoom.js
 
 window.timelineZoom = (() => {
-  let zoom = 1;               // Current zoom level
-  let offsetX = -4000;        // Current horizontal offset
-  const minZoom = 0.1;
-  const maxZoom = 80;
+  let zoom = 1;
+  let offsetX = null; // Defer offset until datingUtils is ready
+  const minZoom = 0.05;
+  const maxZoom = 100;
 
   const listeners = [];
 
@@ -25,20 +25,27 @@ window.timelineZoom = (() => {
     notify();
   }
 
-  function addZoomListener(fn) {
-    listeners.push(fn);
-  }
-
   function getZoomState() {
     return { zoom, offsetX };
   }
 
-  function setupZoomHandlers(canvas) {
+  function addZoomListener(fn) {
+    if (typeof fn === 'function') listeners.push(fn);
+  }
+
+  function setupZoomHandlers(target) {
+    // Initialize offsetX on first run
+    if (offsetX === null && window.datingUtils?.toVisualYear) {
+      const ad1X = window.datingUtils.toVisualYear(1) * zoom;
+      offsetX = -ad1X + window.innerWidth / 2;
+      notify();
+    }
+
     let isDragging = false;
     let lastX = 0;
 
     // Mouse drag
-    canvas.addEventListener('mousedown', e => {
+    target.addEventListener('mousedown', e => {
       isDragging = true;
       lastX = e.clientX;
     });
@@ -53,32 +60,29 @@ window.timelineZoom = (() => {
       setOffsetX(offsetX + dx);
     });
 
-    // Mouse wheel zoom
-    canvas.addEventListener('wheel', e => {
+    // Scroll to zoom
+    target.addEventListener('wheel', e => {
       e.preventDefault();
-      const zoomDelta = -e.deltaY * 0.001;
-      setZoom(zoom * (1 + zoomDelta), e.clientX);
+      const delta = -e.deltaY * 0.001;
+      setZoom(zoom * (1 + delta), e.clientX);
     }, { passive: false });
 
-    // Touch drag and pinch
+    // Touch controls
     let lastTouchDistance = null;
     let lastTouchX = null;
 
-    canvas.addEventListener('touchstart', e => {
+    target.addEventListener('touchstart', e => {
       if (e.touches.length === 1) {
         lastTouchX = e.touches[0].clientX;
       }
     });
 
-    canvas.addEventListener('touchmove', e => {
-      if (e.touches.length === 1) {
-        // Single finger drag to pan
-        const touchX = e.touches[0].clientX;
-        const dx = touchX - lastTouchX;
-        lastTouchX = touchX;
+    target.addEventListener('touchmove', e => {
+      if (e.touches.length === 1 && lastTouchX !== null) {
+        const dx = e.touches[0].clientX - lastTouchX;
+        lastTouchX = e.touches[0].clientX;
         setOffsetX(offsetX + dx);
       } else if (e.touches.length === 2) {
-        // Pinch to zoom
         e.preventDefault();
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
@@ -94,7 +98,7 @@ window.timelineZoom = (() => {
       }
     }, { passive: false });
 
-    canvas.addEventListener('touchend', () => {
+    target.addEventListener('touchend', () => {
       lastTouchDistance = null;
       lastTouchX = null;
     });

@@ -1,0 +1,11 @@
+{
+  "title": "The First Temple Period",
+  "startYear": -1000,
+  "endYear": -586,
+  "visible": "century",
+  "tags": ["Council"],
+  "icon": "icon.svg",
+  "image": "art.webp",
+  "quote": "",
+  "description": ""
+}

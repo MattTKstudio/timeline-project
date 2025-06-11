@@ -15,44 +15,53 @@
   <!-- ✨ Sacred Header -->
   <div data-include="components/header.html"></div>
 
-  <!-- 📜 Cruciform Timeline Section -->
+  <!-- 📜 Cruciform Timeline Viewer -->
   <section id="timeline-section" aria-label="Sacred Timeline Viewer">
+    <div id="timeline-inner">
 
-    <!-- 📏 Timeline Canvas -->
-    <canvas id="timeline-canvas" aria-hidden="true"></canvas>
+      <!-- 📏 Timeline Canvas -->
+      <canvas id="timeline-canvas" aria-hidden="true"></canvas>
 
-    <!-- ⏳ Year Labels -->
-    <div id="year-labels" aria-hidden="true"></div>
+      <!-- ⏳ Year Labels -->
+      <div id="year-labels" aria-hidden="true"></div>
 
-    <!-- 🌱 Timeline Entries -->
-    <div id="entries-container" role="region" aria-label="Timeline Events"></div>
+      <!-- 🌱 Timeline Entries -->
+      <div id="entries-container" role="region" aria-label="Timeline Events"></div>
 
-    <!-- ⛰️ Banner: Art that guides the soul through time (now positioned below the timeline) -->
-    <div id="banner-container">
-      <img
-        id="banner"
-        src="assets/banners/thecruciformbanner.webp"
-        alt="Cruciform Timeline Banner"
-        loading="eager"
-        fetchpriority="high"
-      />
+      <!-- ⛰️ Banner -->
+      <div id="banner-container">
+        <img
+          id="banner"
+          src="assets/banners/thecruciformbanner.webp"
+          alt="Cruciform Timeline Banner"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
     </div>
 
     <!-- 🌒 Edge Fades -->
     <div id="fade-left" class="timeline-fade"></div>
     <div id="fade-right" class="timeline-fade"></div>
-
   </section>
 
-  <!-- 🪵 Sacred Footer -->
+  <!-- 🪟 Entry Modal -->
+  <div id="entry-popup" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <button class="popup-close" onclick="closeEntryPopup()">✖</button>
+    <div id="popup-title" class="popup-title"></div>
+    <blockquote class="popup-quote"></blockquote>
+    <p class="popup-desc"></p>
+    <img class="popup-image" src="" alt="" />
+  </div>
+
+  <!-- 🔗 Sacred Footer -->
   <div data-include="components/footer.html"></div>
 
-  <!-- 📜 Scripts -->
-  <script src="scripts/includeHTML.js" defer></script>
-  <script src="scripts/01_dating.js" defer></script>
+  <!-- 📜 Core Scripts -->
+  <script src="scripts/15_injectPartials.js" defer></script>
+  <script type="module" src="scripts/01_dating.js"></script>
   <script src="scripts/02_timelineZoom.js" defer></script>
   <script src="scripts/03_timelineTicks.js" defer></script>
-  <script src="scripts/04_loadData.js" defer></script>
-  <script src="scripts/05_renderEntries.js" defer></script>
+  <script type="module" src="scripts/04_loadData.js"></script>
 </body>
 </html>

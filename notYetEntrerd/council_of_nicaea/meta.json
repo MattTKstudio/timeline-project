@@ -1,0 +1,14 @@
+{
+  "title": "Council of Nicaea",
+  "startYear": 325,
+  "endYear": 325,
+  "icon": "icon.svg",
+  "image": "art.webp",
+  "quote": "God from God, Light from Light...",
+  "description": "First ecumenical council called by Emperor Constantine.",
+  "tags": ["council", "creed", "arianism"],
+  "visible": "century",
+  "importance": true,
+  "path": "entries/events/council_of_nicaea",
+  "popup": "entries/events/council_of_nicaea/entry.md"
+}

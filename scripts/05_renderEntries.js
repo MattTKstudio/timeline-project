@@ -1,72 +1,86 @@
-// scripts/buildEntries.js
-// Run with: node scripts/buildEntries.js [optionalOutputFile.json]
+// scripts/05_renderEntries.js
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const container = document.getElementById('entries-container');
 
-// Paths and setup
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const dataDir = path.join(__dirname, '../data/timeline');
-const outputArg = process.argv[2] || 'entries.json';
-const outputFile = path.join(__dirname, '../entries', outputArg);
-
-const entries = [];
-
-function walkDirectory(dir) {
-  const items = fs.readdirSync(dir);
-
-  for (const item of items) {
-    const itemPath = path.join(dir, item);
-    const stat = fs.statSync(itemPath);
-
-    if (stat.isDirectory()) {
-      const metaPath = path.join(itemPath, 'meta.json');
-
-      if (fs.existsSync(metaPath)) {
-        try {
-          const raw = fs.readFileSync(metaPath, 'utf-8');
-          const meta = JSON.parse(raw);
-          const relative = path.relative(dataDir, itemPath).replace(/\\/g, '/');
-
-          const startYear = Number(meta.startYear ?? meta.year ?? 0);
-          const endYear = Number(meta.endYear ?? meta.year ?? 0);
-          const title = meta.title || 'Untitled';
-
-          if (!meta.title) {
-            console.warn(`⚠️ Missing title in: ${metaPath}`);
-          }
-
-          const entry = {
-            title,
-            startYear,
-            endYear,
-            icon: `data/timeline/${relative}/${meta.icon || 'icon.png'}`,
-            image: `data/timeline/${relative}/${meta.image || 'art.webp'}`,
-            quote: meta.quote || '',
-            description: meta.description || '',
-            tags: meta.tags || [],
-            visible: meta.visible || 'century',
-            path: `data/timeline/${relative}`
-          };
-
-          entries.push(entry);
-          console.log(`🗂️  Added: ${title} (${startYear})`);
-        } catch (err) {
-          console.error(`❌ Error in ${metaPath}:\n`, err.message);
-        }
-      } else {
-        walkDirectory(itemPath); // Keep going deeper
-      }
-    }
+export function renderEntries(entries) {
+  if (!container || !Array.isArray(entries)) {
+    console.error('❌ Missing container or entries.');
+    return;
   }
+
+  const { toVisualYear } = window.datingUtils;
+  const { zoom: currentZoom, offsetX } = window.timelineZoom.getZoomState();
+  const spacing = currentZoom;
+
+  function isVisibleAtZoom(entryZoom, currentZoom) {
+    const zoomThresholds = {
+      millennium: 0.05,
+      century: 0.5,
+      decade: 5,
+      year: 50,
+    };
+    return currentZoom >= (zoomThresholds[entryZoom] ?? Infinity);
+  }
+
+  container.innerHTML = '';
+
+  entries.forEach(entry => {
+    const startX = toVisualYear(entry.startYear);
+    const endX = toVisualYear(entry.endYear ?? entry.startYear);
+    if (startX === null || endX === null) return;
+
+   // if (!isVisibleAtZoom(entry.visible, currentZoom)) return;
+
+    const x = startX * spacing + offsetX;
+    const width = (endX - startX) * spacing || 2;
+
+    const el = document.createElement('div');
+    el.className = 'timeline-entry';
+    el.style.position = 'absolute';
+    el.style.transform = `translateX(${x}px)`;
+
+    const bar = document.createElement('div');
+    bar.className = 'entry-line';
+    bar.style.width = `${width}px`;
+    el.appendChild(bar);
+
+    const icon = document.createElement('img');
+    icon.className = 'entry-icon';
+    icon.src = entry.icon || 'assets/icons/default.svg';
+    icon.alt = entry.title || 'Timeline Event';
+    icon.onerror = () => { icon.src = 'assets/icons/default.svg'; };
+    icon.style.left = '50%'; // Center within entry box
+    icon.addEventListener('click', () => openEntryPopup(entry));
+    el.appendChild(icon);
+
+    container.appendChild(el);
+  });
 }
 
-// Build and write
-walkDirectory(dataDir);
-entries.sort((a, b) => a.startYear - b.startYear);
+function openEntryPopup(entry) {
+  const popup = document.getElementById('entry-popup');
+  if (!popup) return;
 
-fs.writeFileSync(outputFile, JSON.stringify(entries, null, 2));
-console.log(`✅ Built ${outputArg} with ${entries.length} entries.`);
+  popup.querySelector('.popup-title').textContent = entry.title || '';
+  popup.querySelector('.popup-quote').textContent = entry.quote || '';
+  popup.querySelector('.popup-desc').textContent = entry.description || '';
+
+  const image = popup.querySelector('.popup-image');
+  if (image) {
+    if (entry.image) {
+      image.src = entry.image;
+      image.alt = entry.title || '';
+      image.style.display = 'block';
+    } else {
+      image.style.display = 'none';
+    }
+  }
+
+  popup.classList.add('visible');
+  popup.scrollIntoView({ behavior: 'smooth' });
+}
+
+window.closeEntryPopup = () => {
+  const popup = document.getElementById('entry-popup');
+  popup?.classList.remove('visible');
+};

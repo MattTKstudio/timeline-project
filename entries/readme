@@ -1,0 +1,3 @@
+windows button and then the "R" key.
+cd "C:\Users\matth\OneDrive\Empyrean\3 Paradiso\7 Saturn\timeline-project"
+node scripts/buildEntries.js

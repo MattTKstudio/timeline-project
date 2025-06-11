@@ -13,13 +13,13 @@ window.addEventListener('DOMContentLoaded', () => {
     OFFSET,
     toLabel,
     toVisualYear,
+    AD1,
     isMegaannum,
     isKiloyear,
     isMillennium,
     isCentury,
     isDecade,
-    isYear,
-    adjustYearForPosition
+    isYear
   } = window.datingUtils;
 
   const { getZoomState, addZoomListener, setupZoomHandlers } = window.timelineZoom;
@@ -35,64 +35,62 @@ window.addEventListener('DOMContentLoaded', () => {
     labelContainer.innerHTML = '';
 
     for (let year = START_YEAR; year <= END_YEAR; year++) {
-      const x = (toVisualYear(year) + OFFSET) * zoom + offsetX;
+      const visualYear = toVisualYear(year);
+      if (visualYear === null) continue;
+
+      const x = visualYear * zoom + offsetX;
       if (x < -100 || x > canvas.width + 100) continue;
 
-      ctx.beginPath();
+      let tickHeight = 0;
+      let lineWidth = 1;
+      const color = '#000';
 
-      if (zoom >= 0.01 && isMegaannum(year)) {
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 4;
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, 100);
-        ctx.stroke();
+      if (AD1(year)) {
+        tickHeight = canvas.height;
+        lineWidth = 4;
+      } else if (zoom >= 0.01 && isMegaannum(year)) {
+        tickHeight = 100;
+        lineWidth = 4;
       } else if (zoom >= 0.03 && isKiloyear(year)) {
-        ctx.strokeStyle = '#111';
-        ctx.lineWidth = 3;
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, 80);
-        ctx.stroke();
+        tickHeight = 80;
+        lineWidth = 3;
       } else if (zoom >= 0.1 && isMillennium(year)) {
-        ctx.strokeStyle = '#222';
-        ctx.lineWidth = 2.5;
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, 70);
-        ctx.stroke();
+        tickHeight = 70;
+        lineWidth = 2.5;
       } else if (zoom >= 0.5 && isCentury(year)) {
-        ctx.strokeStyle = '#333';
-        ctx.lineWidth = 2;
-        ctx.moveTo(x, 10);
-        ctx.lineTo(x, 60);
-        ctx.stroke();
-      } else if (zoom >= 1.5 && isDecade(year)) {
-        ctx.strokeStyle = '#444';
-        ctx.lineWidth = 1.5;
-        ctx.moveTo(x, 20);
-        ctx.lineTo(x, 50);
-        ctx.stroke();
-      } else if (zoom >= 3 && isYear(year)) {
-        ctx.strokeStyle = '#888';
-        ctx.lineWidth = 1;
-        ctx.moveTo(x, 30);
-        ctx.lineTo(x, 40);
+        tickHeight = 60;
+        lineWidth = 2;
+      } else if (zoom >= 1 && isDecade(year)) {
+        tickHeight = 50;
+        lineWidth = 1.5;
+      } else if (zoom >= 2 && isYear(year)) {
+        tickHeight = 40;
+        lineWidth = 1;
+      }
+
+      if (tickHeight > 0) {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, tickHeight);
         ctx.stroke();
       }
 
-      // Add label if visible
-      if (
+      const showLabel =
+        AD1(year) ||
         (zoom >= 0.01 && isMegaannum(year)) ||
         (zoom >= 0.03 && isKiloyear(year)) ||
         (zoom >= 0.1 && isMillennium(year)) ||
         (zoom >= 0.5 && isCentury(year)) ||
-        (zoom >= 10 && isDecade(year)) ||
-        (zoom >= 60 && isYear(year))
-      ) {
+        (zoom >= 5 && isDecade(year)) ||
+        (zoom >= 60 && isYear(year));
+
+      if (showLabel) {
         const label = document.createElement('div');
         label.className = 'year-label';
         label.style.left = `${x}px`;
-        label.style.opacity = '0';
-        label.style.transition = 'opacity 0.3s ease';
-        label.innerText = toLabel(year);
+        label.textContent = toLabel(year);
         labelContainer.appendChild(label);
 
         requestAnimationFrame(() => {
@@ -101,14 +99,14 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Position banner to align center at AD 1
-    const ad1X = (toVisualYear(1) + OFFSET) * zoom + offsetX;
+    // Move banner to align with AD 1
+    const ad1X = toVisualYear(1) * zoom + offsetX;
     banner.style.transform = `translateX(${ad1X}px) translateX(-50%) scale(${zoom})`;
     banner.style.transformOrigin = 'center center';
   }
 
   resizeCanvas();
-  setupZoomHandlers(canvas);
+  setupZoomHandlers(section);
   drawTicks();
 
   addZoomListener(drawTicks);

@@ -1,7 +1,39 @@
-{
-  "title": "St. Benedict",
-  "year": 480,
-  "icon": "st_benedict.png",
-  "summary": "Father of Western Monasticism",
-  "link": "st_benedict"
-}
+[
+  {
+    "title": "Battle of Lepanto",
+    "startYear": 1571,
+    "endYear": 1581,
+    "visible": "decade",
+    "tags": [
+      "Marian",
+      "War",
+      "Rosary",
+      "Naval"
+    ],
+    "slug": "battle-of-lepanto",
+    "icon": "entries/events/battle-of-lepanto/icon.svg",
+    "image": "art.webp",
+    "quote": "The Rosary is the weapon for these times. — St. Padre Pio",
+    "description": "The Christian fleet defeats the Ottoman navy in a decisive battle through the intercession of Our Lady.",
+    "link": "entries/events/battle-of-lepanto/",
+    "folder": "entries/events/battle-of-lepanto",
+    "art": "entries/events/battle-of-lepanto/art.webp"
+  },
+  {
+    "title": "Council of Trent",
+    "startYear": 1545,
+    "endYear": 1563,
+    "visible": "century",
+    "tags": [
+      "Council",
+      "Protestant-Reformation"
+    ],
+    "slug": "council-of-trent",
+    "icon": "entries/events/council-of-trent/icon.svg",
+    "image": "art.webp",
+    "quote": "Let them who glory, glory in the Lord.",
+    "description": "The Council of Trent was convened in response to the Protestant Reformation.",
+    "folder": "entries/events/council-of-trent",
+    "art": "entries/events/council-of-trent/art.webp"
+  }
+]
